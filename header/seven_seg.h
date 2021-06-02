@@ -46,14 +46,16 @@ void Write7Seg(unsigned char c) {
 	// Match your port and pin numbers:
 	
 	static unsigned char *sevenSeg_Port			= &PORTB;	// Seven segment port
-	static const unsigned char sevenSeg_A		= 7; 		// Pin for segment A
+	static const unsigned char sevenSeg_A		= 7;		// Pin for segment A
 	static const unsigned char sevenSeg_B		= 6; 		// Pin for segment B
 	static const unsigned char sevenSeg_C		= 4; 		// Pin for segment C
 	static const unsigned char sevenSeg_D		= 2; 		// Pin for segment D
 	static const unsigned char sevenSeg_E		= 1; 		// Pin for segment E
-	static const unsigned char sevenSeg_F		= 3; 		// Pin for segment F
-	static const unsigned char sevenSeg_G		= 0; 		// Pin for segment G
-	static const unsigned char sevenSeg_DP		= 5; 		// Pin for segment DP
+	static const unsigned char sevenSeg_F		= 3; //actual: 9   Pin for segment F
+	static const unsigned char sevenSeg_G		= 0; //actual: 10  Pin for segment G
+	static const unsigned char sevenSeg_DP		= 5;		// Pin for segment DP
+
+	//ground pins: 3 & 8
 	
 	// Turns on all segments
 	// *sevenSeg_Port =	(1<<sevenSeg_A)	|	(1<<sevenSeg_B) |	(1<<sevenSeg_C) |	(1<<sevenSeg_D) |
