@@ -123,10 +123,10 @@ int Detect_Tick (int dstate) {
 	return dstate;
 }
 
-enum BetStates { startb, bwait, inc, dec, lock, points, reset } bstate;
+enum BetStates { startb, bwait, inc, dec, lock, points } bstate;
 int Bet_Tick (int bstate) {
 	unsigned char in = ~PINC & 0xA0;
-	unsigned char inA = ~PINA & 0x20;
+	//unsigned char inA = ~PINA & 0x20;
 	switch (bstate) {
 		case startb:
 			bstate = bwait;
@@ -136,32 +136,32 @@ int Bet_Tick (int bstate) {
 			total_points = curr_points + curr_bet;
 			break;
 		case bwait:
-			if (inA == 0 && start_blink == 0 && in == 0x80 && curr_bet < total_points) {
+			if (start_blink == 0 && in == 0x80 && curr_bet < total_points) {
 				bstate = inc;
 				curr_bet = curr_bet + 1;
 				curr_points = curr_points - 1;
 			}
-			else if (inA == 0 && start_blink == 0 && in == 0x20 && curr_bet > 1) {
+			else if (start_blink == 0 && in == 0x20 && curr_bet > 1) {
 				bstate = dec;
 				--curr_bet;
 				curr_points = curr_points + 1;
 			}
-			else if (inA == 0 && start_blink != 0) {
+			else if (start_blink != 0) {
 				bet_ready = 1;
 				bstate = lock;
 			}
-			else if (inA != 0) 
+/*			else if (inA != 0) 
 				bstate = reset;
 			else
 				bstate = bwait;
-			break;
-		case reset:
+*/			break;
+/*		case reset:
 			if (inA != 0) 
 				bstate = reset;
 			else
 				bstate = bwait;
 			break;
-		case inc:
+*/		case inc:
 			if (in == 0x80)
 				bstate = inc;
 			else
@@ -341,9 +341,9 @@ int main(void) {
 	DDRC = 0x1F; PORTC = 0xE0;
 	DDRD = 0xFF; PORTD = 0x00;
 
-	static task task1, task2, task3, task4, task5, task6, task7;
+	static task task1, task2, task3, task4, task5, task6;
 
-	task *tasks[] = { &task1, &task2, &task3, &task4, &task5, &task6, &task7 };
+	task *tasks[] = { &task1, &task2, &task3, &task4, &task5, &task6 };
 	const unsigned short numTasks = sizeof(tasks)/sizeof(task*);
 
 	const char start = -1;
