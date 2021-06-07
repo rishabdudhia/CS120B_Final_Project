@@ -100,8 +100,7 @@ void Write7Seg(unsigned char c) {
 			*sevenSeg_Port =	(1<<sevenSeg_A)	|	(1<<sevenSeg_B) |	(1<<sevenSeg_C) |	(1<<sevenSeg_D) | (1<<sevenSeg_F) |	(1<<sevenSeg_G) ;
 			break;
 		case SS_A:
-			*sevenSeg_Port =	(1<<sevenSeg_A)	|	(1<<sevenSeg_B) |	(1<<sevenSeg_C) |
-								(1<<sevenSeg_E)	|	(1<<sevenSeg_F) |	(1<<sevenSeg_G) ;
+			*sevenSeg_Port =        (1<<sevenSeg_A) |       (1<<sevenSeg_B) |       (1<<sevenSeg_C) |       (1<<sevenSeg_D) | (1<<sevenSeg_F) |     (1<<sevenSeg_G) ;
 			break;
 		case SS_B:
 			*sevenSeg_Port =        (1<<sevenSeg_A) |       (1<<sevenSeg_B) |       (1<<sevenSeg_C) |       (1<<sevenSeg_D) | (1<<sevenSeg_F) |     (1<<sevenSeg_G) ;
