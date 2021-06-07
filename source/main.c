@@ -35,7 +35,8 @@ unsigned char bet_ready = 1;
 unsigned char curr_on = 0x00;
 unsigned char start_blink = 0;
 unsigned char rewards = 0;
-unsigned char round_win = 0;
+unsigned char round_lose = 0;
+unsigned char reset = 0;
 
 enum BlinkStates { bstart, blink_off, blink } blstate;
 int Blink_Tick (int blstate) {
@@ -123,7 +124,7 @@ int Detect_Tick (int dstate) {
 	return dstate;
 }
 
-enum BetStates { startb, bwait, inc, dec, lock, points } bstate;
+enum BetStates { startb, bwait, inc, dec, lock, points, win, lose } bstate;
 int Bet_Tick (int bstate) {
 	unsigned char in = ~PINC & 0xA0;
 	//unsigned char inA = ~PINA & 0x20;
@@ -133,6 +134,7 @@ int Bet_Tick (int bstate) {
 			curr_points = 2;
 			curr_bet = 1;
 			bet_ready = 0;
+			round_lose = 0;
 			total_points = curr_points + curr_bet;
 			break;
 		case bwait:
@@ -150,21 +152,46 @@ int Bet_Tick (int bstate) {
 				bet_ready = 1;
 				bstate = lock;
 			}
+			else if (curr_points + curr_bet > 9) {
+				bstate = win;
+			}
+			else if (round_lose != 0) {
+				bstate = lose;
+			}
 /*			else if (inA != 0) 
 				bstate = reset;
-			else
+*/			else {
 				bstate = bwait;
-*/			break;
+				total_points = curr_points + curr_bet;
+			}
+			break;
 /*		case reset:
 			if (inA != 0) 
 				bstate = reset;
 			else
 				bstate = bwait;
 			break;
-*/		case inc:
+*/		case win:
+			if (reset == 0) {
+				bstate = win;
+			}
+			else {
+				bstate = bwait;
+				reset = 0;
+			}
+			break;
+		case lose:
+			if (reset == 0) {
+				bstate = lose;
+			}
+			else {
+				bstate = bwait;
+				reset = 0;
+			}
+		case inc:
 			if (in == 0x80)
 				bstate = inc;
-			else
+			else 
 				bstate = bwait;
 			break;
 		case dec:
@@ -200,7 +227,23 @@ int Bet_Tick (int bstate) {
 			break;
 		case bwait:
 			bet_ready = 0;
-			total_points = curr_points + curr_bet;
+			//total_points = curr_points + curr_bet;
+			break;
+		case win:
+			if (PINB == 0x00) {
+//				curr_points = 0x09;
+				Write7Seg(curr_points);
+			}
+			else
+				PORTB = 0x00;
+			break;
+		case lose:
+			if (PINB == 0x00){
+				//curr_points = 0x00;
+				Write7Seg(curr_points);
+			}
+			else
+				PORTB = 0x00;
 			break;
 /*		case reset:
 			curr_points = 2;
@@ -245,6 +288,10 @@ int Award_Tick (int astate) {
 			else
 				curr_bet = 0;
 			curr_points = curr_points + curr_bet;
+			if (curr_points == 0) {
+				round_lose = 1;
+				break;
+			}
 			break;
 		default:
 			break;
@@ -263,20 +310,11 @@ int SevSeg_Tick (int sevstate) {
 int Matrix_Tick(int state) {
 	static unsigned char i = 0;
 	static unsigned char k = 0;
-	static unsigned char r = 0x00;
+	static unsigned char r = 0x80;
 	static unsigned char c = 0x00;
-	static unsigned char rows[5] = {0x01, 0x03, 0x07, 0x0F, 0x1F};
-	unsigned char pts[2] = {0x0F, 0xFF};
+	unsigned char pts[8] = {0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE, 0xFF};
 
-	if (curr_bet > 5) {
-		i = 1;
-		k = 4;
-	}
-	else {
-		i = 0;
-		k = curr_bet - 1;
-	}
-	r = rows[k];
+	
 
 	/*for (unsigned char j = 1; j < 6; ++j) {
 		if (j <= curr_bet) {
@@ -286,8 +324,8 @@ int Matrix_Tick(int state) {
 		else
 			break;
 	}*/
-	PORTC = ~r;
-	c = pts[i];
+	PORTC = ~0x1F;
+	c = pts[curr_bet - 1];
 	PORTD = c;
 	return 0;
 }
@@ -315,7 +353,6 @@ int Reset_Tick (int rstate) {
 			rstate = rstart;
 			break;
 	}
-
 	switch (rstate) {
 		case rstart:
 		case waitr:
@@ -328,7 +365,6 @@ int Reset_Tick (int rstate) {
 		default:
 			break;
 	}
-
 	return rstate;
 }
 */
@@ -373,7 +409,7 @@ int main(void) {
 
 	//Task 5
 	task5.state = start;
-	task5.period = 50;
+	task5.period = 200;
 	task5.elapsedTime = task5.period;
 	task5.TickFct = &Bet_Tick;
 
@@ -408,3 +444,4 @@ int main(void) {
 	}
 	return 1;
 }
+

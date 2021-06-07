@@ -9,7 +9,7 @@
 
 // Seven Seg Enumeration of characters
 enum sevenSeg { 
-//	_           _     _           _     _     _     _     _     _           _           _     _       
+//  _           _     _           _     _     _     _     _     _           _           _     _       
 // | |     |    _|    _|   |_|   |_    |_      |   |_|   |_|   |_|   |_    |      _|   |_    |_       
 // |_|     |   |_     _|     |    _|   |_|     |   |_|    _|   | |   |_|   |_    |_|   |_    |        .
    SS_0, SS_1, SS_2, SS_3, SS_4, SS_5, SS_6, SS_7, SS_8, SS_9, SS_A, SS_B, SS_C, SS_D, SS_E, SS_F, SS_DP,
@@ -64,8 +64,7 @@ void Write7Seg(unsigned char c) {
 	// Seven Seg character defintions
 	switch (c) {
 		case SS_0:
-			*sevenSeg_Port =	(1<<sevenSeg_A)	|	(1<<sevenSeg_B) |	(1<<sevenSeg_C) |	(1<<sevenSeg_D) |
-								(1<<sevenSeg_E)	|	(1<<sevenSeg_F)	;
+			*sevenSeg_Port =	(1<<sevenSeg_A)	|	(1<<sevenSeg_B) |	(1<<sevenSeg_C) |	(1<<sevenSeg_D) | (1<<sevenSeg_E)	|	(1<<sevenSeg_F)	;
 			break;
 		case SS_1:
 			*sevenSeg_Port =	(1<<sevenSeg_B) |	(1<<sevenSeg_C) ;
@@ -98,32 +97,30 @@ void Write7Seg(unsigned char c) {
 								(1<<sevenSeg_E)	|	(1<<sevenSeg_F) |	(1<<sevenSeg_G) ;
 			break;
 		case SS_9:
-			*sevenSeg_Port =	(1<<sevenSeg_A)	|	(1<<sevenSeg_B) |	(1<<sevenSeg_C) |	(1<<sevenSeg_D) |
-								(1<<sevenSeg_F) |	(1<<sevenSeg_G) ;
+			*sevenSeg_Port =	(1<<sevenSeg_A)	|	(1<<sevenSeg_B) |	(1<<sevenSeg_C) |	(1<<sevenSeg_D) | (1<<sevenSeg_F) |	(1<<sevenSeg_G) ;
 			break;
 		case SS_A:
 			*sevenSeg_Port =	(1<<sevenSeg_A)	|	(1<<sevenSeg_B) |	(1<<sevenSeg_C) |
 								(1<<sevenSeg_E)	|	(1<<sevenSeg_F) |	(1<<sevenSeg_G) ;
 			break;
 		case SS_B:
-			*sevenSeg_Port =	(1<<sevenSeg_C) |	(1<<sevenSeg_D) |
-								(1<<sevenSeg_E)	|	(1<<sevenSeg_F) |	(1<<sevenSeg_G) ;
+			*sevenSeg_Port =        (1<<sevenSeg_A) |       (1<<sevenSeg_B) |       (1<<sevenSeg_C) |       (1<<sevenSeg_D) | (1<<sevenSeg_F) |     (1<<sevenSeg_G) ;
 			break;
 		case SS_C:
-			*sevenSeg_Port =	(1<<sevenSeg_A)	|	(1<<sevenSeg_D) |
-								(1<<sevenSeg_E)	|	(1<<sevenSeg_F) ;
+			*sevenSeg_Port =        (1<<sevenSeg_A) |       (1<<sevenSeg_B) |       (1<<sevenSeg_C) |       (1<<sevenSeg_D) | (1<<sevenSeg_F) |     (1<<sevenSeg_G) ;
+
 			break;
 		case SS_D:
-			*sevenSeg_Port =	(1<<sevenSeg_B) |	(1<<sevenSeg_C) |	(1<<sevenSeg_D) |
-								(1<<sevenSeg_E)	|	(1<<sevenSeg_G) ;
+			*sevenSeg_Port =        (1<<sevenSeg_A) |       (1<<sevenSeg_B) |       (1<<sevenSeg_C) |       (1<<sevenSeg_D) | (1<<sevenSeg_F) |     (1<<sevenSeg_G) ;
+
 			break;
 		case SS_E:
-			*sevenSeg_Port =	(1<<sevenSeg_A)	|	(1<<sevenSeg_D) |
-								(1<<sevenSeg_E)	|	(1<<sevenSeg_F) |	(1<<sevenSeg_G) ;
+			*sevenSeg_Port =        (1<<sevenSeg_A) |       (1<<sevenSeg_B) |       (1<<sevenSeg_C) |       (1<<sevenSeg_D) | (1<<sevenSeg_F) |     (1<<sevenSeg_G) ;
+
 			break;
 		case SS_F:
-			*sevenSeg_Port =	(1<<sevenSeg_A)	|
-								(1<<sevenSeg_E)	|	(1<<sevenSeg_F) |	(1<<sevenSeg_G) ;
+			*sevenSeg_Port =        (1<<sevenSeg_A) |       (1<<sevenSeg_B) |       (1<<sevenSeg_C) |       (1<<sevenSeg_D) | (1<<sevenSeg_F) |     (1<<sevenSeg_G) ;
+
 			break;
 		case SS_DP:
 			*sevenSeg_Port =	(1<<sevenSeg_DP);
@@ -262,7 +259,8 @@ void Write7Seg(unsigned char c) {
 			break;	
 	
 		default:
-			*sevenSeg_Port =	(1<<sevenSeg_G) ;
+			*sevenSeg_Port =        (1<<sevenSeg_A) |       (1<<sevenSeg_B) |       (1<<sevenSeg_C) |       (1<<sevenSeg_D) | (1<<sevenSeg_E)       |       (1<<sevenSeg_F) ;
+
 		break;
 	}
 }
