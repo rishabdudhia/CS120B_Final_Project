@@ -13,6 +13,8 @@
  *	by the increase and decrease buttons, respectively. 
  *	I acknowledge all content contained herein, excluding template or example
  *	code, is my own original work.
+ *
+ *	Youtube Link: https://www.youtube.com/watch?v=YAcyPDn7Pjg
  */
 #include <avr/io.h>
 #ifdef _SIMULATE_
